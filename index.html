@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flooring Cost Calculator | Material, Underlayment & Installation</title>
+  <meta name="description" content="Estimate flooring cost per square foot, material, underlayment, and installation with a free flooring calculator. Compare laminate, hardwood, tile, and vinyl.">
+  <link rel="canonical" href="https://flooring-calculator.pages.dev/">
+  <meta property="og:title" content="Flooring Cost Calculator">
+  <meta property="og:description" content="Estimate flooring material, underlayment, labor, and total cost before you buy.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://flooring-calculator.pages.dev/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "Flooring Cost Calculator",
+        "applicationCategory": "HomeApplication",
+        "operatingSystem": "Any",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "description": "Estimate flooring material, underlayment, installation, and total cost per square foot."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How much does flooring cost per square foot installed?",
+            "acceptedAnswer": {"@type": "Answer", "text": "Installed flooring typically runs about $3 to $15 per square foot depending on material. Laminate and vinyl land near $3 to $7 installed, while hardwood and tile often run $7 to $15 installed."}
+          },
+          {
+            "@type": "Question",
+            "name": "How much waste should I add for flooring?",
+            "acceptedAnswer": {"@type": "Answer", "text": "Plan on a 5% to 10% waste factor for simple rectangular rooms, and 10% to 15% for diagonal layouts, angled walls, or lots of cuts around cabinets and doorways."}
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="FloorWise home">
+      <span class="brand-mark">F</span>
+      <span>FloorWise</span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a href="#calculator">Calculator</a>
+      <a href="#guide">Guide</a>
+      <a href="blog/index.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="tool-hero">
+      <form id="calculator" class="calculator-panel">
+        <div class="panel-title">
+          <p class="eyebrow">Flooring cost calculator</p>
+          <h1>Estimate flooring material, underlayment, and installation cost.</h1>
+          <p>Enter room dimensions or a known square footage. FloorWise estimates flooring to buy, underlayment, labor, and total cost per square foot.</p>
+        </div>
+
+        <section class="input-section">
+          <div class="section-heading">
+            <span>1</span>
+            <h2>Floor area</h2>
+          </div>
+          <div class="mode-toggle" role="group" aria-label="Area input mode">
+            <label><input type="radio" name="area-mode" value="room" checked><span>Room dimensions</span></label>
+            <label><input type="radio" name="area-mode" value="area"><span>Total square feet</span></label>
+          </div>
+
+          <div class="field-grid" data-mode="room">
+            <label>Room length, ft<input id="room-length" type="number" min="0" step="0.1" value="12"></label>
+            <label>Room width, ft<input id="room-width" type="number" min="0" step="0.1" value="12"></label>
+            <label>Rooms like this<input id="room-count" type="number" min="1" step="1" value="1"></label>
+          </div>
+
+          <div class="field-grid hidden" data-mode="area">
+            <label>Total square feet<input id="manual-area" type="number" min="0" step="1" value="144"></label>
+            <label>Rooms or zones<input id="manual-zone-count" type="number" min="1" step="1" value="1"></label>
+          </div>
+
+          <div class="field-grid">
+            <label>Flooring type
+              <select id="floor-type">
+                <option value="laminate">Laminate</option>
+                <option value="hardwood">Hardwood</option>
+                <option value="tile">Tile</option>
+                <option value="vinyl">Vinyl</option>
+              </select>
+            </label>
+            <label>Waste factor, %<input id="waste" type="number" min="0" max="50" step="1" value="10"></label>
+          </div>
+        </section>
+
+        <section class="input-section">
+          <div class="section-heading">
+            <span>2</span>
+            <h2>Material &amp; underlayment</h2>
+          </div>
+          <div class="field-grid">
+            <label>Material price per sq ft<input id="material-price" type="number" min="0" step="0.01" value="2.5"></label>
+            <label>Underlayment $/sq ft<input id="underlayment-price" type="number" min="0" step="0.01" value="0.5"></label>
+          </div>
+        </section>
+
+        <section class="input-section">
+          <div class="section-heading">
+            <span>3</span>
+            <h2>Installation</h2>
+          </div>
+          <div class="field-grid">
+            <label class="check-row"><input id="include-install" type="checkbox" checked> Include installation</label>
+            <label>Install rate per sq ft<input id="install-rate" type="number" min="0" step="0.01" value="3.5"></label>
+          </div>
+          <p class="hint">Uncheck for a DIY material-only estimate.</p>
+        </section>
+      </form>
+
+      <aside class="results-panel" aria-live="polite">
+        <p class="eyebrow">Estimate</p>
+        <div class="hero-result">
+          <span>Total flooring cost</span>
+          <strong id="total-cost">$0</strong>
+          <em id="cost-range">Range loading...</em>
+        </div>
+        <div class="assumption-row" aria-label="Current estimate assumptions">
+          <span id="assumption-type">Laminate</span>
+          <span id="assumption-waste">10% waste</span>
+          <span id="assumption-install">Install included</span>
+        </div>
+        <div class="metric-grid">
+          <div><span>Floor area</span><strong id="floor-area">0 sq ft</strong></div>
+          <div><span>Flooring to buy</span><strong id="flooring-needed">0 sq ft</strong></div>
+          <div><span>Material cost</span><strong id="material-cost">$0</strong></div>
+          <div><span>Underlayment</span><strong id="underlayment-cost">$0</strong></div>
+          <div><span>Installation</span><strong id="install-cost">$0</strong></div>
+          <div><span>Cost per sq ft</span><strong id="cost-per-sqft">$0</strong></div>
+        </div>
+        <div class="paint-plan" aria-label="Cost split visualization">
+          <div class="plan-heading">
+            <span>Cost split</span>
+          </div>
+          <div class="plan-bar" aria-hidden="true">
+            <span id="material-bar"></span>
+            <span id="underlay-bar"></span>
+            <span id="labor-bar"></span>
+          </div>
+          <div class="plan-legend">
+            <span><i class="material-dot"></i>Material <strong id="material-share">0%</strong></span>
+            <span><i class="underlay-dot"></i>Underlayment <strong id="underlay-share">0%</strong></span>
+            <span><i class="labor-dot"></i>Labor <strong id="labor-share">0%</strong></span>
+          </div>
+        </div>
+        <div class="buy-list">
+          <span>Shopping list</span>
+          <p id="shopping-list">Enter dimensions to calculate a flooring plan.</p>
+        </div>
+        <button id="copy-summary" type="button">Copy estimate</button>
+        <p id="copy-status" class="copy-status"></p>
+      </aside>
+    </section>
+
+    <section id="breakdown" class="breakdown-band">
+      <article class="table-card">
+        <p class="eyebrow">Cost breakdown</p>
+        <h2>Material, underlayment, and labor</h2>
+        <table>
+          <thead>
+            <tr><th>Line item</th><th>How it is estimated</th><th>Amount</th></tr>
+          </thead>
+          <tbody id="breakdown-body"></tbody>
+        </table>
+      </article>
+      <aside class="formula-card">
+        <p class="eyebrow">Formula</p>
+        <h2>Flooring cost formula</h2>
+        <p>Flooring cost = floor area x (1 + waste) x material price + underlayment + installation.</p>
+        <p>Floor area is length x width x rooms, or a total square feet you enter. Typical waste is 5% to 15% depending on the layout.</p>
+      </aside>
+    </section>
+
+    <section id="guide" class="content-grid">
+      <article>
+        <h2>How to use this flooring cost calculator</h2>
+        <p>Start with room dimensions if you are pricing a bedroom, living room, office, hallway, or apartment. Use total square feet if you already measured the area from a floor plan or a contractor quote.</p>
+        <h3>DIY vs professional installation</h3>
+        <p>For a DIY job, uncheck installation and focus on material and underlayment. For a professional estimate, enter a local install rate per square foot and keep the box checked.</p>
+      </article>
+      <article>
+        <h2>What affects flooring cost?</h2>
+        <p>Flooring cost changes with material type, room size, waste factor, underlayment, and whether you hire a pro. Laminate and vinyl are the budget choices; hardwood and tile cost more but tend to last longer.</p>
+        <h3>Picking a material</h3>
+        <p>See the <a href="blog/best-flooring-types.html">best flooring types guide</a> to compare laminate, hardwood, tile, and vinyl on price and durability.</p>
+      </article>
+    </section>
+
+    <section class="cluster-band">
+      <p class="eyebrow">Flooring guides</p>
+      <h2>Read the guides people search for</h2>
+      <div class="cluster-grid">
+        <a href="blog/how-much-to-install-flooring.html"><strong>Cost to Install Flooring</strong><span>Material vs labor ranges</span></a>
+        <a href="blog/best-flooring-types.html"><strong>Best Flooring Types 2026</strong><span>Laminate vs hardwood vs vinyl</span></a>
+        <a href="blog/how-much-flooring-do-i-need.html"><strong>How Much Flooring Do I Need</strong><span>Room size lookup + calculator</span></a>
+        <a href="blog/index.html"><strong>All Flooring Guides</strong><span>Cost, type, and coverage articles</span></a>
+      </div>
+    </section>
+
+    <section class="faq-band">
+      <h2>Flooring calculator FAQ</h2>
+      <details>
+        <summary>How much does flooring cost per square foot installed?</summary>
+        <p>Installed flooring usually runs about $3 to $15 per square foot. Laminate and vinyl land near $3 to $7 installed, while hardwood and tile often run $7 to $15 installed depending on region and prep work.</p>
+      </details>
+      <details>
+        <summary>Should I round flooring up?</summary>
+        <p>Yes. Flooring is sold in cartons that cover a fixed square footage, so round your total up to whole cartons. The shopping list above estimates the square feet to buy including waste.</p>
+      </details>
+      <details>
+        <summary>Does the calculator include trim or baseboards?</summary>
+        <p>No. It covers the field of the floor only. Add quarter-round, transitions, and baseboards as separate line items if your project includes them.</p>
+      </details>
+      <details>
+        <summary>Is this a contractor quote?</summary>
+        <p>No. It is a planning estimate. Subfloor prep, removal of old flooring, furniture moving, and regional labor rates can change the final price.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 FloorWise. Independent flooring planning tool.</p>
+    <nav aria-label="Footer navigation">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
