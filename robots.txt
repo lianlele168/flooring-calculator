@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://flooring-calculator.pages.dev/sitemap.xml
+Sitemap: https://flooring-calculator.lianlele168.workers.dev/sitemap.xml
